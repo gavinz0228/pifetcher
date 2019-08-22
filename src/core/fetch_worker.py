@@ -9,12 +9,15 @@ class FetchWorker:
         print(message)
 
     def perform_fetch(self):
-        response = self.work_queue.get_work()
-        if not response:
+        messages, handles = self.work_queue.get_work()
+        if not messages:
             self.log("no task")
             return
-        #print(response)
-    
+        for i in range(len(messages)):
+            self.log(messages[i])
+            #perform work
+            self.work_queue.delete_work(handles[i])  
+
     def do_work(self):
         while True:
             time.sleep(1)

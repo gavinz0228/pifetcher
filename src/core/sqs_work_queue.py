@@ -11,16 +11,12 @@ class SqsWorkQueue(BaseWorkQueue):
         if not response:
             return [], [None]
         messages = [ m.body for m in response]
-        print(response[0].receipt_handle)
-
-        ids = [ m.reciept_handle for m in response]
-        
-        #ids = [ m.reciept_handle for m in messages]
-        return messages, ids
+        handles = [m for m in response]
+        return messages, handles
 
     def add_work(self, message):
         response = self.work_queue.send_message(MessageBody=message, MessageGroupId = "fetch", MessageDeduplicationId = str(time.time()))
         print(response)
 
-    def delete_work(self, id):
-        self.work_queue.delete_message(ReceiptHandle = id)
+    def delete_work(self, handle):
+        handle.delete()
