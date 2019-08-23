@@ -1,4 +1,4 @@
-from base_work_queue import BaseWorkQueue
+from .base_work_queue import BaseWorkQueue
 import time
 import boto3
 

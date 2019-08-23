@@ -1,6 +1,6 @@
 
 import time
-from sqs_work_queue import SqsWorkQueue
+from work_queue.sqs_work_queue import SqsWorkQueue
 
 class FetchWorker:
     def __init__(self):

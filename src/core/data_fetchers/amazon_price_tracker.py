@@ -1,7 +1,7 @@
 import aiohttp
 import asyncio
 from bs4 import BeautifulSoup
-from core.base_data_fetcher import BasePriceFetcher 
+from core.base_price_fetcher import BasePriceFetcher 
 
 
 class AmazonPriceTracker(BasePriceFetcher):

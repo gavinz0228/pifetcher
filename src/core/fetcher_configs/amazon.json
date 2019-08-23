@@ -1,0 +1,6 @@
+{
+    "price": {
+        "type": "text",
+        "selector": "#priceblock_ourprice"
+    }
+}
