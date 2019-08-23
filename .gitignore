@@ -1,1 +1,3 @@
 src/core/__pycache__/**
+src/core/data_fetchers/__pycache__/**
+src/core/work_queue/__pycache__/**
