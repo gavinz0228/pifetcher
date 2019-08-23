@@ -36,7 +36,7 @@ class FetchWorker(ABC):
             fetcher = FetcherFactory.get_fetcher_by_name('amazon')
             fetcher.load_html_by_url(messages[i])
             result, parsed_data = fetcher.parse()
-
+            print(result, parsed_data)
             if parsed_data:
                 self.save_result(result)
                 num_fetched += 1
@@ -49,16 +49,15 @@ class FetchWorker(ABC):
     def stop(self):
         self.log("Received stop signal, stop worker.")
         self.has_stop = True
-    def resume(self):
-        self.log("Received resume signal, restarting worker.")
-        self.has_stop = False
-    def do_work(self):
+
+    def do_works(self):
         while True:
-            time.sleep(0.1)
-            if not self.has_stop:
-                self.log("searching for work")
-                num_fetched = self.perform_fetch()
-                self.log(str(num_fetched) + " work(s) done.")
+            time.sleep(0.5)
+            self.log("searching for work")
+            num_fetched = self.perform_fetch()
+            self.log(str(num_fetched) + " work(s) done.")
+            if self.has_stop:
+                break
 
 
 
