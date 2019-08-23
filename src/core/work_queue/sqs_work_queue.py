@@ -19,7 +19,6 @@ class SqsWorkQueue(BaseWorkQueue):
         
         entries = [ { 'MessageBody': m, 'Id': str(i), 'MessageDeduplicationId': str(time.time()).replace(".",""), "MessageGroupId" : "FetchWork" } for i, m in enumerate(message)]
         response = self.work_queue.send_messages(Entries = entries)
-        #response = self.work_queue.send_message(MessageBody=message, MessageGroupId = "fetch", MessageDeduplicationId = str(time.time()))
         print(response)
 
     def delete_work(self, handle):
