@@ -1,6 +1,19 @@
 {
     "price": {
         "type": "text",
-        "selector": "#priceblock_ourprice"
+        "selector": "#priceblock_ourprice",
+        "attribute":".text"
+    },
+    "id": {
+        "type": "text",
+        "selector": "#ASIN",
+        "attribute": "value"
+    },
+    "title": {
+        "type": "text",
+        "selector": "#productTitle",
+        "attribute":".text"
     }
+
+    
 }

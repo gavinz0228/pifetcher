@@ -52,9 +52,12 @@ class FetchWorker(ABC):
     def do_works(self):
         while True:
             time.sleep(0.5)
-            self.log("searching for work")
+            self.log("searching for work.")
             num_fetched = self.perform_fetch()
             self.log(str(num_fetched) + " work(s) done.")
+            if not num_fetched:
+                self.log("no work found, exiting work loop.")
+                break
             if self.has_stop:
                 break
 
