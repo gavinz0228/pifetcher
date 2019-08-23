@@ -1,6 +1,7 @@
 from .base_work_queue import BaseWorkQueue
 import time
 import boto3
+import json
 
 class SqsWorkQueue(BaseWorkQueue):
     def __init__(self):
@@ -11,13 +12,14 @@ class SqsWorkQueue(BaseWorkQueue):
         response = self.work_queue.receive_messages(MaxNumberOfMessages = 1, MessageAttributeNames=['All'])
         if not response:
             return [], [None]
-        messages = [ m.body for m in response]
+            
+        messages = [ json.loads(m.body) for m in response]
         handles = [m for m in response]
         return messages, handles
 
     def add_work(self, message):
         
-        entries = [ { 'MessageBody': m, 'Id': str(i), 'MessageDeduplicationId': str(time.time()).replace(".",""), "MessageGroupId" : "FetchWork" } for i, m in enumerate(message)]
+        entries = [ { 'MessageBody': json.dumps(m), 'Id': str(i), 'MessageDeduplicationId': str(time.time()).replace(".",""), "MessageGroupId" : "FetchWork" } for i, m in enumerate(message)]
         response = self.work_queue.send_messages(Entries = entries)
         print(response)
 

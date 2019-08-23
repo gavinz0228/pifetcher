@@ -5,9 +5,9 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import json
-from os import path
+from os import path, getcwd, get_exec_path
+from config import Config
 
-BROWSER_CONFIG_FILE_PATH = 'config.json'
 
 def check_init(func):
     def wrapper(*args, **kwargs):
@@ -17,22 +17,16 @@ def check_init(func):
         return func(*args, **kwargs)
     return wrapper
 
-
 class BaseDataFetcher(ABC):
     def __init__(self, config_file_path):
 
-        #load browser config
-        browser_config_path = path.join(path.dirname(path.realpath(__file__)), '../', BROWSER_CONFIG_FILE_PATH)
-        browser_config = None 
-        with open(browser_config_path, 'r') as f:
-            browser_config = json.load(f)
-
         # initialize browser
         options = Options()
-        for option in browser_config['browser_options']:
+        for option in Config.browser['browser_options']:
             options.add_argument(option)
+        driver_abs_path = path.join(path.dirname(path.realpath(__file__)), '../','bin/chromedriver.exe')
+        self.driver = webdriver.Chrome(chrome_options=options, executable_path=driver_abs_path)
 
-        self.driver = webdriver.Chrome(chrome_options=options, executable_path="bin/chromedriver.exe")
         #initialize class variable
         self.html_source = None
         self.dom = None

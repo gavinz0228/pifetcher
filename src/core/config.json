@@ -1,3 +1,11 @@
 {
-    "browser_options":["--window-size=1920,1080", "--disable-extensions", "--proxy-server='direct://'", "--proxy-bypass-list=*", "--start-maximized","--ignore-certificate-errors", "--headless"]
+    "browser":{
+        "browser_options":["--window-size=1920,1080", "--disable-extensions", "--proxy-server='direct://'", "--proxy-bypass-list=*", "--start-maximized","--ignore-certificate-errors", "--headless"]
+
+    },
+    "worker":
+    {
+        "num_works_per_time": 1
+    }
+
 }

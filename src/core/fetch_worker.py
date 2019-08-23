@@ -12,7 +12,6 @@ class FetchWorker(ABC):
     def log(self, message):
         print(message)
 
-
     def add_works(self, urls):
         self.work_queue.add_work(urls)
 
@@ -33,8 +32,8 @@ class FetchWorker(ABC):
         for i in range(len(messages)):
             self.log(messages[i])
             #perform work
-            fetcher = FetcherFactory.get_fetcher_by_name('amazon')
-            fetcher.load_html_by_url(messages[i])
+            fetcher = FetcherFactory.get_fetcher_by_name(messages[i]['fetcher_name'])
+            fetcher.load_html_by_url(messages[i]['url'])
             result, parsed_data = fetcher.parse()
             print(result, parsed_data)
             if parsed_data:
