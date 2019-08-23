@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
+import json
 
 def check_init(func):
     def wrapper(*args, **kwargs):
@@ -15,16 +16,17 @@ def check_init(func):
 
 
 class BaseDataFetcher(ABC):
-    def __init__(self):
+    def __init__(self, config_file_path):
         # initialize browser
         options = Options()
         options.add_argument('--ignore-certificate-errors')
-        options.add_argument('--headless')
+        #options.add_argument('--headless')
         self.driver = webdriver.Chrome(chrome_options=options, executable_path="bin/chromedriver.exe")
         #initialize class variable
         self.html_source = None
         self.dom = None
         self.initialized = False
+        self.config = self.load_config(config_file_path)
 
     def load_html_by_url(self, url):
         self.driver.get(url)
@@ -32,22 +34,28 @@ class BaseDataFetcher(ABC):
         self.dom = BeautifulSoup(self.html_source, 'html.parser')
         self.initialized = True
         return self.html_source
-        
-    def parse_by_config_file(self, config_file_path):
-        with open(config_file_path, 'r') as json_config:
-            config = json.load(json_config)
-            return self.parse(config)
 
-    def parse(self, config):
+    def load_config(self, config_file_path):
+        with open(config_file_path, 'r') as json_config:
+            return json.load(json_config)
+
+    def parse(self):
         return_obj = {}
-        for field, config in config.items():
+        parsed_data = False
+
+        for field, val_config in self.config.items():
             value = None
-            if config[field]['type'] == 'text':
-                value = self.select_text(config[field]['selector'])
+            if val_config['type'] == 'text':
+                print("path", val_config['selector'])
+                value = self.select_text(val_config['selector'])
+            if value:
+                parsed_data = True
+
             return_obj[field] = value
-        return return_obj
+        return return_obj, parsed_data
 
     @check_init
     def select_text(self, path):
-        return self.dom.select_one(path).text
+        element = self.dom.select_one(path)
+        return element.text if element else None
 

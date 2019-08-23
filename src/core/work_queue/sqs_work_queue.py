@@ -6,6 +6,7 @@ class SqsWorkQueue(BaseWorkQueue):
     def __init__(self):
         sqs = boto3.resource('sqs')
         self.work_queue = sqs.get_queue_by_name(QueueName='datafetch.fifo')
+
     def get_work(self):
         response = self.work_queue.receive_messages(MaxNumberOfMessages = 1, MessageAttributeNames=['All'])
         if not response:
@@ -15,7 +16,10 @@ class SqsWorkQueue(BaseWorkQueue):
         return messages, handles
 
     def add_work(self, message):
-        response = self.work_queue.send_message(MessageBody=message, MessageGroupId = "fetch", MessageDeduplicationId = str(time.time()))
+        
+        entries = [ { 'MessageBody': m, 'Id': str(i), 'MessageDeduplicationId': str(time.time()).replace(".",""), "MessageGroupId" : "FetchWork" } for i, m in enumerate(message)]
+        response = self.work_queue.send_messages(Entries = entries)
+        #response = self.work_queue.send_message(MessageBody=message, MessageGroupId = "fetch", MessageDeduplicationId = str(time.time()))
         print(response)
 
     def delete_work(self, handle):
