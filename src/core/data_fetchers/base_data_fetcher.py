@@ -25,7 +25,18 @@ class BaseDataFetcher(ABC):
         options = Options()
         for option in Config.browser['browser_options']:
             options.add_argument(option)
-        driver_abs_path = path.join(path.dirname(path.realpath(__file__)), '../','bin/chromedriver.exe')
+
+        if path.exists(Config.browser['binary_location']):
+            options.binary_location = Config.browser['binary_location']
+
+        driver_abs_path = Config.browser['driver_path']
+        if not path.exists(Config.browser['driver_path']):
+            driver_abs_path = path.join(path.dirname(path.realpath(__file__)), '../','drivers/'+ Config.browser['driver_path'])
+        if not path.exists(driver_abs_path):
+            raise ValueError(f"driver path {driver_abs_path} cannot be found")
+        
+
+
         self.driver = webdriver.Chrome(chrome_options=options, executable_path=driver_abs_path)
 
         #initialize class variable

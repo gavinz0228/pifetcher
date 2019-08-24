@@ -1,6 +1,8 @@
 {
     "browser":{
-        "browser_options":[]
+        "browser_options":[],
+        "driver_path":"chromedriver-win-76.exe",
+        "binary_location": ""
 
     },
     "queue":
