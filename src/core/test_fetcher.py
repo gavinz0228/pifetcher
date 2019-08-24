@@ -1,11 +1,12 @@
 from fetch_worker import FetchWorker
 
 class TestWorker(FetchWorker):
-    def save_result(self, results):
+    def on_save_result(self, results):
         print(results)
     def on_empty_result_error(self):
         self.stop()
-        #self.resume()
+    def on_add_work_signal(self):
+        self.add_works()
     
 if __name__ == "__main__":
     from fetcher_factory import FetcherFactory

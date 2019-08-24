@@ -5,7 +5,9 @@
     },
     "queue":
     {
-        "num_works_per_time": 1
+        "num_works_per_time": 1,
+        "queue_type":"AWSSimpleQueueService",
+        "queue_name":"datafetch.fifo"
     },
     "logger":
     {

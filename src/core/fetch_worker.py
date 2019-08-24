@@ -1,13 +1,14 @@
 
 import time
 from abc import ABC, abstractmethod
-from work_queue.sqs_work_queue import SqsWorkQueue
 from fetcher_factory import FetcherFactory
 from logger import Logger
+from work_queue.work_queue_factory import WorkQueueFactory
+from config import Config
 
 class FetchWorker(ABC):
     def __init__(self):
-        self.work_queue = SqsWorkQueue()
+        self.work_queue = WorkQueueFactory.get_work_queue(Config.queue['queue_type'], Config.queue['queue_name'])
         self.has_stop = False
 
     def log(self, message):
@@ -17,12 +18,17 @@ class FetchWorker(ABC):
         self.work_queue.add_work(urls)
 
     @abstractmethod
-    def save_result(self, results):
+    def on_save_result(self, results):
         raise NotImplementedError()
 
     @abstractmethod
     def on_empty_result_error(self):
         pass
+
+    @abstractmethod
+    def on_add_work_signal(self):
+        pass
+    
 
     def perform_fetch(self):
         num_fetched = 0
@@ -38,7 +44,7 @@ class FetchWorker(ABC):
             result, parsed_data = fetcher.parse()
             Logger.debug( "parsed object" + str(parsed_data))
             if parsed_data:
-                self.save_result(result)
+                self.on_save_result(result)
                 num_fetched += 1
                 self.work_queue.delete_work(handles[i])  
             else:
