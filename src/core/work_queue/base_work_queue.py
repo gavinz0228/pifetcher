@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
+from config import Config
 class BaseWorkQueue(ABC):
     def __init__(self):
+        self.num_work_per_time = Config.queue["num_works_per_time"]
         pass
     @abstractmethod
     def get_work(self):

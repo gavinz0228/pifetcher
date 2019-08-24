@@ -7,7 +7,8 @@ from bs4 import BeautifulSoup
 import json
 from os import path, getcwd, get_exec_path
 from config import Config
-
+from utilities.data_utils import DataUtils
+from logger import Logger
 
 def check_init(func):
     def wrapper(*args, **kwargs):
@@ -56,6 +57,7 @@ class BaseDataFetcher(ABC):
                     parsed_data = True
             return_obj[field] = value
         return return_obj, parsed_data
+
     @check_init
     def get_value(self, path, type, attribute):
         element = self.dom.select_one(path)
@@ -63,16 +65,10 @@ class BaseDataFetcher(ABC):
         if not element:
             return None
         if attribute == ".text":
-            return element.text.strip()
+            return DataUtils.extract_by_type_name(element.text.strip(), type)
+     
         elif attribute:
-            print(element[attribute])
-            return element[attribute]
+            return DataUtils.extract_by_type_name(element[attribute].strip() , type)
     
-    def select_text(self, path):
-        element = self.dom.select_one(path)
-        if element:
-            return element.text.strip()
-        else:
-            return None
-
-
+if __name__ == "__main__":
+    pass

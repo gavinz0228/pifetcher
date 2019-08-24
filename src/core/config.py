@@ -10,4 +10,5 @@ with open(config_path, 'r') as f:
 
 class Config:
     browser = config["browser"]
-    worker = config["worker"]
+    queue = config["queue"]
+    logger = config["logger"]

@@ -4,12 +4,13 @@ import boto3
 import json
 
 class SqsWorkQueue(BaseWorkQueue):
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        super(SqsWorkQueue, self). __init__(*args, **kwargs)
         sqs = boto3.resource('sqs')
         self.work_queue = sqs.get_queue_by_name(QueueName='datafetch.fifo')
 
     def get_work(self):
-        response = self.work_queue.receive_messages(MaxNumberOfMessages = 1, MessageAttributeNames=['All'])
+        response = self.work_queue.receive_messages(MaxNumberOfMessages = self.num_work_per_time, MessageAttributeNames=['All'])
         if not response:
             return [], [None]
             
