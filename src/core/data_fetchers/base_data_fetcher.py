@@ -9,6 +9,17 @@ from os import path, getcwd, get_exec_path
 from config import Config
 from utilities.data_utils import DataUtils
 from logger import Logger
+from sys import platform
+
+if platform == 'win32':
+    KEY_DRIVER_PATH = 'win-driver_path'
+    KEY_BINARY_LOCATION = 'win-binary_location'
+elif platform == "darwin":
+    KEY_DRIVER_PATH = 'mac-driver_path'
+    KEY_BINARY_LOCATION = 'mac-binary_location'
+elif platform in ['linux','linux2']:
+    KEY_DRIVER_PATH = 'linux-driver_path'
+    KEY_BINARY_LOCATION = 'linux-binary_location'
 
 def check_init(func):
     def wrapper(*args, **kwargs):
@@ -26,17 +37,17 @@ class BaseDataFetcher(ABC):
         for option in Config.browser['browser_options']:
             options.add_argument(option)
 
-        if path.exists(Config.browser['binary_location']):
-            options.binary_location = Config.browser['binary_location']
 
-        driver_abs_path = Config.browser['driver_path']
-        if not path.exists(Config.browser['driver_path']):
-            driver_abs_path = path.join(path.dirname(path.realpath(__file__)), '../','drivers/'+ Config.browser['driver_path'])
+
+        if path.exists(Config.browser[KEY_BINARY_LOCATION]):
+            options.binary_location = Config.browser[KEY_BINARY_LOCATION]
+
+        driver_abs_path = Config.browser[KEY_DRIVER_PATH]
+        if not path.exists(Config.browser[KEY_DRIVER_PATH]):
+            driver_abs_path = path.join(path.dirname(path.realpath(__file__)), '../','drivers/'+ Config.browser[KEY_DRIVER_PATH])
         if not path.exists(driver_abs_path):
             raise ValueError(f"driver path {driver_abs_path} cannot be found")
         
-
-
         self.driver = webdriver.Chrome(chrome_options=options, executable_path=driver_abs_path)
 
         #initialize class variable
