@@ -14,8 +14,9 @@ class FetchWorker(ABC):
     def log(self, message):
         print(message)
 
-    def add_works(self, urls):
-        self.work_queue.add_work(urls)
+    def add_works(self, works):
+        messages = [ {"type":"FetchWork", "content": w} for w in works]
+        self.work_queue.add_work(messages)
 
     @abstractmethod
     def on_save_result(self, results):
@@ -26,32 +27,43 @@ class FetchWorker(ABC):
         pass
 
     @abstractmethod
-    def on_add_work_signal(self):
+    def on_start_process_signal(self):
         pass
     
+    def perform_fetch(self, work):
+        fetcher = FetcherFactory.get_fetcher_by_name(work['fetcher_name'])
+        fetcher.load_html_by_url(work['url'])
+        result, parsed_data = fetcher.parse()
+        Logger.debug( "parsed object" + str(parsed_data))
+        if parsed_data:
+            self.on_save_result(result)
+            return True
+        else:
+            return False
 
-    def perform_fetch(self):
-        num_fetched = 0
-        messages, handles = self.work_queue.get_work()
-        if not messages:
-            Logger.info("no task")
-            return
-        for i in range(len(messages)):
-            Logger.debug(messages[i])
-            #perform work
-            fetcher = FetcherFactory.get_fetcher_by_name(messages[i]['fetcher_name'])
-            fetcher.load_html_by_url(messages[i]['url'])
-            result, parsed_data = fetcher.parse()
-            Logger.debug( "parsed object" + str(parsed_data))
-            if parsed_data:
-                self.on_save_result(result)
-                num_fetched += 1
-                self.work_queue.delete_work(handles[i])  
-            else:
+    def process_message(self, message, handle):
+        #perform work
+        print(message['type'])
+        if message['type'] == 'FetchWork':
+            success = self.perform_fetch(message['content'])
+            if not success:
                 Logger.info("no data was parse from the page. ")
                 self.on_empty_result_error()
+            else:
+                self.work_queue.delete_work(handle)
+        elif message['type'] == 'StartProcess':
+            self.on_start_process_signal()
+            self.work_queue.delete_work(handle)
+        elif message['type'] == 'ResumeProcess':
+            self.has_stop = False
+            self.work_queue.delete_work(handle)  
+        else:
+            Logger.warning('message type not recognized')
 
-        return num_fetched
+
+    def get_messages(self):
+        return  self.work_queue.get_work()
+
     def stop(self):
         Logger.info("Received stop signal, stop worker.")
         self.has_stop = True
@@ -59,15 +71,18 @@ class FetchWorker(ABC):
     def do_works(self):
         while True:
             time.sleep(0.5)
-
             if not self.has_stop:
                 Logger.info("searching for work.")
-
-                num_fetched = self.perform_fetch()
-                Logger.info(str(num_fetched) + " work(s) done.")
-
-                if not num_fetched:
+                messages, handles = self.get_messages()
+                if not messages:
                     Logger.info("no work found.")
+                    continue
+
+                for i in range(len(messages)):
+                    Logger.debug(messages[i])
+                    Logger.debug(handles[i])
+                    self.process_message(messages[i], handles[i])
+
                     
 
 
