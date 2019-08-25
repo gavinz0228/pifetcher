@@ -97,10 +97,10 @@ class TestWorker(FetchWorker):
 5. Run the worker and, send a StartProcess Signal to the queue to start the process
 
 - start the worker to receive and process works
-'''
+```
 tw = TestWorker()
 tw.do_works()
-'''
+```
 
 - to send a start signal to the queue
 ```
