@@ -14,13 +14,21 @@ setuptools.setup(
     url="https://github.com/gavinz0228/pifetcher",
     #packages=setuptools.find_packages("src"),
   
-    packages=['pifetcher'],
-    package_dir = {'pifetcher': 'src/pifetcher/'},
+    packages=['pifetcher', 'pifetcher.core', 'pifetcher.data_fetchers', 'pifetcher.utilities', 'pifetcher.work_queue'],
+    package_dir = {
+        'pifetcher': 'src/pifetcher',
+        'pifetcher.core': 'src/pifetcher/core', 
+        'pifetcher.data_fetchers': 'src/pifetcher/data_fetchers',
+        'pifetcher.utilities': 'src/pifetcher/utilities',
+        'pifetcher.work_queue':'src/pifetcher/work_queue'
+        },
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         'Operating System :: MacOS :: MacOS X',
         'Operating System :: Microsoft :: Windows',
-        'Operating System :: POSIX',
-    ]
+        'Operating System :: POSIX'
+    ],
+    include_package_data=True
+
 )

@@ -1,0 +1,2 @@
+include src/pifetcher/config.json
+include src/pifetcher/drivers/*
