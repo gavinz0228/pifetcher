@@ -6,8 +6,13 @@ from pifetcher.work_queue import WorkQueueFactory
 
 class FetchWorker(ABC):
     def __init__(self):
+        self.check_config_init()
         self.work_queue = WorkQueueFactory.get_work_queue(Config.queue['queue_type'], Config.queue['queue_name'])
         self.has_stop = False
+
+    def check_config_init(self):
+        if not Config.initialized:
+            raise ValueError("please call pifetcher.core.Config.use to use a config file before using the worker.")
 
     def log(self, message):
         print(message)

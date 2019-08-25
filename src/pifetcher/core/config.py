@@ -1,16 +1,17 @@
 from os import path
 import json
 
-
-
-
 class Config:
+    initialized = False
     browser = None
     queue = None
     logger = None
     fetcher = None
+
     @staticmethod
-    def use_config(config_path):
+    def use(config_path):
+        if not path.exists(config_path):
+            raise Exception(f'config file path does not exist. please create one')
         with open(config_path, 'r') as f:
             config = json.load(f)
 
@@ -18,3 +19,4 @@ class Config:
             Config.queue = config["queue"]
             Config.logger = config["logger"]
             Config.fetcher = config["fetcher"]
+            Config.initialized = True

@@ -1,6 +1,10 @@
+from os import path
+import sys
+lib_path = path.join(path.dirname(path.realpath(__file__)), '../')
+print(lib_path)
+sys.path.append(lib_path)
+
 from pifetcher.core import Config
-Config.use_config('config.json')
-print(Config.fetcher)
 from pifetcher.core import FetchWorker
 
 class TestWorker(FetchWorker):
@@ -19,7 +23,7 @@ if __name__ == "__main__":
 
     #print(getcwd())
     from pifetcher.core import FetcherFactory
-    
+    Config.use('pifetcherConfig.json')
     def test_do_work():
         tw = TestWorker()
         tw.do_works()
@@ -36,4 +40,4 @@ if __name__ == "__main__":
         obj = f.parse()
         print(obj)
     
-    test_fetcher()
+    test_all()
