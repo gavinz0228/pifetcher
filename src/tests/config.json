@@ -1,0 +1,29 @@
+{
+    "browser":{
+        "browser_options":["--window-size=1920,1080", "--disable-extensions", "--proxy-server='direct://'", "--proxy-bypass-list=*", "--start-maximized","--ignore-certificate-errors", "--headless"],
+        "win-driver_path":"chromedriver-win-76.exe",
+        "win-binary_location": "",
+        "mac-driver_path":"chromedriver-mac-76",
+        "mac-binary_location": ""
+
+    },
+    "queue":
+    {
+        "num_works_per_time": 1,
+        "queue_type":"AWSSimpleQueueService",
+        "queue_name":"datafetch.fifo"
+    },
+    "logger":
+    {
+        "output":"console"
+    },
+    "fetcher":
+    {
+        "mappingConfigs":{
+            "amazon":"amazon.json"
+        }
+        
+    }
+
+
+}

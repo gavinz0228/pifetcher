@@ -1,4 +1,5 @@
 import time
+from os import path
 from abc import ABC, abstractmethod
 from pifetcher.core import FetcherFactory, Logger, Config
 from pifetcher.work_queue import WorkQueueFactory

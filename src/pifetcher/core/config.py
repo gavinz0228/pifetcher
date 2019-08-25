@@ -1,14 +1,20 @@
 from os import path
 import json
 
-CONFIG_FILE_PATH = '../config.json'
-config_path = path.join(path.dirname(path.realpath(__file__)), CONFIG_FILE_PATH)
-config = None
 
-with open(config_path, 'r') as f:
-    config = json.load(f)
+
 
 class Config:
-    browser = config["browser"]
-    queue = config["queue"]
-    logger = config["logger"]
+    browser = None
+    queue = None
+    logger = None
+    fetcher = None
+    @staticmethod
+    def use_config(config_path):
+        with open(config_path, 'r') as f:
+            config = json.load(f)
+
+            Config.browser = config["browser"]
+            Config.queue = config["queue"]
+            Config.logger = config["logger"]
+            Config.fetcher = config["fetcher"]
