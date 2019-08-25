@@ -1,10 +1,7 @@
-
 import time
 from abc import ABC, abstractmethod
-from fetcher_factory import FetcherFactory
-from logger import Logger
-from work_queue.work_queue_factory import WorkQueueFactory
-from config import Config
+from pifetcher.core import FetcherFactory, Logger, Config
+from pifetcher.work_queue import WorkQueueFactory
 
 class FetchWorker(ABC):
     def __init__(self):

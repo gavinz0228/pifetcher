@@ -1,5 +1,5 @@
 import logging
-from config import Config
+from pifetcher.core import Config
 
 logging.basicConfig(level=logging.WARNING)
 

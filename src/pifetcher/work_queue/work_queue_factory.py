@@ -1,4 +1,4 @@
-from work_queue.sqs_work_queue import SqsWorkQueue
+from pifetcher.work_queue import SqsWorkQueue
 
 queue_types = ['AWSSimpleQueueService']
 queue_implementations = [SqsWorkQueue]

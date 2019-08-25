@@ -1,5 +1,10 @@
 *.pyc
-src/core/__pycache__/
-src/core/data_fetchers/__pycache__/
-src/core/work_queue/__pycache__/
-src/core/debug.log
+src/pifetcher/__pycache__/
+src/pifetcher/data_fetchers/__pycache__/
+src/pifetcher/work_queue/__pycache__/
+src/pifetcher/debug.log
+src/pifetcher/utilities/__pycache__/
+src/pifetcher/core/__pycache__/
+pifetcher.egg-info/
+build/
+dist/

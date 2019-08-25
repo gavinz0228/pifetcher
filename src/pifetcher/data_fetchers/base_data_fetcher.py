@@ -6,9 +6,10 @@ from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import json
 from os import path, getcwd, get_exec_path
-from config import Config
-from utilities.data_utils import DataUtils
-from logger import Logger
+from pifetcher.core import Config
+from pifetcher.core import Logger
+from pifetcher.utilities.data_utils import DataUtils
+
 from sys import platform
 
 if platform == 'win32':
@@ -46,7 +47,7 @@ class BaseDataFetcher(ABC):
         if not path.exists(Config.browser[KEY_DRIVER_PATH]):
             driver_abs_path = path.join(path.dirname(path.realpath(__file__)), '../','drivers/'+ Config.browser[KEY_DRIVER_PATH])
         if not path.exists(driver_abs_path):
-            raise ValueError(f"driver path {driver_abs_path} cannot be found")
+            raise Exception(f"driver path {driver_abs_path} cannot be found")
         
         self.driver = webdriver.Chrome(chrome_options=options, executable_path=driver_abs_path)
 

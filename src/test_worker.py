@@ -1,4 +1,4 @@
-from fetch_worker import FetchWorker
+from pifetcher.core import FetchWorker
 
 class TestWorker(FetchWorker):
     def on_save_result(self, results):
@@ -12,7 +12,7 @@ class TestWorker(FetchWorker):
         self.add_works([work])
     
 if __name__ == "__main__":
-    from fetcher_factory import FetcherFactory
+    from pifetcher.core import FetcherFactory
     def test_do_work():
         tw = TestWorker()
         tw.do_works()
