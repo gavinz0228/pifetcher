@@ -1,9 +1,9 @@
 import time
 from os import path
 from abc import ABC, abstractmethod
-from pifetcher.core import FetcherFactory, Logger, Config
+from pifetcher.core import Logger, Config
 from pifetcher.work_queue import WorkQueueFactory
-
+from pifetcher.data_fetchers import FetcherFactory
 class FetchWorker(ABC):
     def __init__(self):
         self.check_config_init()

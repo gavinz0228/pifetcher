@@ -83,7 +83,7 @@ class BaseDataFetcher(ABC):
     def get_value(self, path, type, attribute):
         element = self.dom.select_one(path)
         if not element:
-            return None
+            return None, f"element {path} was not found"
         if attribute == ".text":
             return DataUtils.extract_by_type_name(element.text.strip(), type)
         elif attribute:
