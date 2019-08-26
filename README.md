@@ -1,5 +1,5 @@
 # pifetcher
-A scalable headless data fetching library written with python and message queue service to enable quickly and easily prasing web data in a distributive way.
+A scalable headless data fetching library written with python and message queue service to enable quickly and easily parsing web data in a distributive way.
 
 ##
 To install
