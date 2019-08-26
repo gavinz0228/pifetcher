@@ -1,6 +1,14 @@
 # pifetcher
 A scalable headless data fetching library written with python and message queue service to enable quickly and easily prasing web data in a distributive way.
 
+##
+To install
+```
+pip install pifetcher
+```
+
+## PYPI Link  [https://pypi.org/project/pifetcher/](https://pypi.org/project/pifetcher/)
+
 ## dependencies:
 - selenium
 - BeautifulSoup4
@@ -111,7 +119,10 @@ tw.do_works()
     
 ``` 
 
-
+Command to exit all chromedriver in windows
+```
+taskkill /f /im chromedriver-win-76.exe
+```
 
 ### To do list items:
 - simplify initial setup process

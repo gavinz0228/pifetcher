@@ -1,4 +1,5 @@
 from pifetcher.work_queue import BaseWorkQueue
+from pifetcher.core import Logger
 import time
 import boto3
 import json
@@ -22,7 +23,7 @@ class SqsWorkQueue(BaseWorkQueue):
         
         entries = [ { 'MessageBody': json.dumps(m), 'Id': str(i), 'MessageDeduplicationId': str(time.time()).replace(".",""), "MessageGroupId" : "FetchWork" } for i, m in enumerate(message)]
         response = self.work_queue.send_messages(Entries = entries)
-        print(response)
+        Logger.debug(response)
 
     def delete_work(self, handle):
         handle.delete()
