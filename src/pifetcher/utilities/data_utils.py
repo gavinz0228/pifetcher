@@ -1,9 +1,10 @@
 import re
-
+from pifetcher.core import Logger
 class DataUtils:
+    types = ['float', 'text', 'int']
+    
     @staticmethod
     def extract_object(value, regex, convert_func):
-        print(value)
         result = None
         error = None
         try:
@@ -11,7 +12,7 @@ class DataUtils:
             result = convert_func(next(iter).group())
         except Exception as e:
             error = e
-        print(result)
+            Logger.info(error)
         return result, error
 
     @staticmethod
@@ -24,17 +25,16 @@ class DataUtils:
 
     @staticmethod
     def extract_text(value):
-        return value
+        return value, None
     @staticmethod 
     def extract_by_type_name(value, type_name):
-        types = ['float', 'text', 'int']
-        funcs = [DataUtils.extract_float, DataUtils.extract_text, DataUtils.extract_int]
         tidx = None
         try:
-            tidx = types.index(type_name)
+            convert_funcs = [DataUtils.extract_float, DataUtils.extract_text, DataUtils.extract_int]
+            tidx = DataUtils.types.index(type_name)
         except:
             raise ValueError(f'type {type_name} is not supported for data extraction')
-        return funcs[tidx](value)
+        return convert_funcs[tidx](value)
 
 if __name__ == "__main__":
     print(DataUtils.extract_int('$14'))

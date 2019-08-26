@@ -1,6 +1,6 @@
 {
     "price": {
-        "type": "text",
+        "type": "float",
         "selector": "#priceblock_ourprice",
         "attribute":".text"
     },

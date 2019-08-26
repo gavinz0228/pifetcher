@@ -73,23 +73,19 @@ class BaseDataFetcher(ABC):
         parsed_data = False
 
         for field, val_config in self.config.items():
-            value = None
-            if val_config['type'] == 'text':
-                value = self.get_value(val_config['selector'], val_config['type'], val_config['attribute'])
-                if value:
-                    parsed_data = True
+            value, _ = self.get_value(val_config['selector'], val_config['type'], val_config['attribute'])
+            if value:
+                parsed_data = True
             return_obj[field] = value
         return return_obj, parsed_data
 
     @check_init
     def get_value(self, path, type, attribute):
         element = self.dom.select_one(path)
-        
         if not element:
             return None
         if attribute == ".text":
             return DataUtils.extract_by_type_name(element.text.strip(), type)
-     
         elif attribute:
             return DataUtils.extract_by_type_name(element[attribute].strip() , type)
     
