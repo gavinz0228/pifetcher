@@ -40,4 +40,4 @@ if __name__ == "__main__":
         obj = f.parse()
         print(obj)
     
-    test_all()
+    test_fetcher()
