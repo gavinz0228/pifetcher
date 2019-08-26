@@ -22,7 +22,7 @@ class FetchWorker(ABC):
         self.work_queue.add_work(messages)
 
     @abstractmethod
-    def on_save_result(self, results):
+    def on_save_result(self, result, work):
         raise NotImplementedError()
 
     @abstractmethod
@@ -39,14 +39,13 @@ class FetchWorker(ABC):
         result, parsed_data = fetcher.parse()
         Logger.debug( "parsed object" + str(parsed_data))
         if parsed_data:
-            self.on_save_result(result)
+            self.on_save_result(result, work)
             return True
         else:
             return False
 
     def process_message(self, message, handle):
         #perform work
-        print(message['type'])
         if message['type'] == 'FetchWork':
             success = self.perform_fetch(message['content'])
             if not success:

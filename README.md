@@ -125,6 +125,7 @@ taskkill /f /im chromedriver-win-76.exe
 ```
 
 ### To do list items:
+- use better strategy to reduce number of requests a worker has to send
 - simplify initial setup process
 
 ### Completed items
