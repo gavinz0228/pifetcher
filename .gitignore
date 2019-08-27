@@ -9,3 +9,4 @@ src/pifetcher/core/__pycache__/
 pifetcher.egg-info/
 build/
 dist/
+src/tests/debug.log

@@ -8,7 +8,7 @@ class Logger:
     @staticmethod
     def init():
         if Logger.initialized == False:
-            logging.basicConfig(level=logging.WARNING)
+            logging.basicConfig(level=logging.INFO)
     
     @staticmethod
     def debug(msg):

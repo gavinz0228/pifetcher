@@ -11,7 +11,9 @@
     {
         "num_works_per_time": 1,
         "queue_type":"AWSSimpleQueueService",
-        "queue_name":"datafetch.fifo"
+        "queue_name":"datafetch.fifo",
+        "polling_interval_on_active": 0.5,
+        "polling_interval_on_idle": 60
     },
     "logger":
     {
@@ -22,7 +24,6 @@
         "mappingConfigs":[{
             "amazon":"fetcher_configs/amazon.json"
         }]
-        
     }
 
 

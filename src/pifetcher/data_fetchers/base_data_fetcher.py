@@ -38,8 +38,6 @@ class BaseDataFetcher(ABC):
         for option in Config.browser['browser_options']:
             options.add_argument(option)
 
-
-
         if path.exists(Config.browser[KEY_BINARY_LOCATION]):
             options.binary_location = Config.browser[KEY_BINARY_LOCATION]
 
@@ -78,7 +76,8 @@ class BaseDataFetcher(ABC):
                 parsed_data = True
             return_obj[field] = value
         return return_obj, parsed_data
-
+    def close(self):
+        self.driver.quit()
     @check_init
     def get_value(self, path, type, attribute):
         element = self.dom.select_one(path)

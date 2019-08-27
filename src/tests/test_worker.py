@@ -8,8 +8,8 @@ from pifetcher.core import Config
 from pifetcher.core import FetchWorker
 
 class TestWorker(FetchWorker):
-    def on_save_result(self, results):
-        print(results)
+    def on_save_result(self, result, work):
+        print(result)
     def on_empty_result_error(self):
         self.stop()
     def on_start_process_signal(self):
@@ -40,4 +40,4 @@ if __name__ == "__main__":
         obj = f.parse()
         print(obj)
     
-    test_fetcher()
+    test_all()

@@ -1,8 +1,7 @@
 # pifetcher
 A scalable headless data fetching library written with python and message queue service to enable quickly and easily parsing web data in a distributive way.
 
-##
-To install
+## To install
 ```
 pip install pifetcher
 ```
@@ -15,6 +14,18 @@ pip install pifetcher
 - boto3 (optional but by default)
 - ChromeDriver for chrome 76(by default)
 - Chrome executable v 76(by default)
+
+## new feature:
+
+Implemented a new strategy to fetch message in a smarter way. When no message was fetched in a worker cycle, it would enter the idle state. Under the idle state, it's supposed to wait a longer time interval before trying to fetch the next message. This sleep interval is defined in the config file at the location:
+```
+        "polling_interval_on_idle": 60
+```
+
+After the worker received at least one mssage in a worker cycle, the worker status will be set as ACTIVE. Under this state, it's supposed to wait a shorter time interval before trying to fetch the next message. This sleep interval is defined in the config file at the location:
+```
+        "polling_interval_on_active": 0.2,
+```
 
 ## how to use:
 
@@ -45,6 +56,10 @@ create a mapping config file for fetching amazon.com item pricing data
 ```
 3. create a pifetcherConfig.json file, and add the fetcher mapping file that previously created to fetcher -> mappingConfigs with its name and file path 
 
+num_works_per_time : defines the number of messages it try to fetch from the queue per work cycle
+polling_interval_on_active : time interval before fetching the next message when the worker status is active(meaning it fetched at least on message in the last worker cycle)
+polling_interval_on_idle : time interval before fetching the next message when the worker status is active(meaning it fetched no message in the last worker cycle)
+
 ```{
     "browser":{
         "browser_options":["--window-size=1920,1080", "--disable-extensions", "--proxy-server='direct://'", "--proxy-bypass-list=*", "--start-maximized","--ignore-certificate-errors", "--headless"],
@@ -58,7 +73,9 @@ create a mapping config file for fetching amazon.com item pricing data
     {
         "num_works_per_time": 1,
         "queue_type":"AWSSimpleQueueService",
-        "queue_name":"datafetch.fifo"
+        "queue_name":"datafetch.fifo",
+        "polling_interval_on_active": 0.2,
+        "polling_interval_on_idle": 60
     },
     "logger":
     {
@@ -125,11 +142,11 @@ taskkill /f /im chromedriver-win-76.exe
 ```
 
 ### To do list items:
-- use better strategy to reduce number of requests a worker has to send
+- fix browser driver issues
 - simplify initial setup process
 
 ### Completed items
-
+- - use better strategy to reduce number of requests a worker has to send
 - put all constants in config the config file (checked)
 - complete the type conversions for different data types (checked)
 - add message type (work initiation message type) (checked)
