@@ -22,17 +22,12 @@ def extract_text(value):
     return value, None
 
 class DataUtils:
-    types = ['float', 'text', 'int']
-    convert_funcs = [extract_float, extract_text, extract_int]
-
+    convert_func_lookup = {'float': extract_float, 'text':extract_text, 'int':extract_int}
     @staticmethod 
     def extract_by_type_name(value, type_name):
-        tidx = None
-        try:
-            tidx = DataUtils.types.index(type_name)
-        except:
+        if type_name not in DataUtils.convert_func_lookup:
             raise ValueError(f'type {type_name} is not supported for data extraction')
-        return DataUtils.convert_funcs[tidx](value)
+        return DataUtils.convert_func_lookup[type_name](value)
 
 if __name__ == "__main__":
     print(extract_int('$14'))
