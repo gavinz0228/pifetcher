@@ -3,7 +3,7 @@ from pifetcher.core import Logger
 import time
 import boto3
 import json
-
+import uuid
 class SqsWorkQueue(BaseWorkQueue):
     def __init__(self, *args, **kwargs):
         super(SqsWorkQueue, self). __init__(*args, **kwargs)
@@ -20,7 +20,7 @@ class SqsWorkQueue(BaseWorkQueue):
         return messages, handles
 
     def add_work(self, message):
-        entries = [ { 'MessageBody': json.dumps(m), 'Id': str(i), 'MessageDeduplicationId': str(time.time()).replace(".",""), "MessageGroupId" : "FetchWork" } for i, m in enumerate(message)]
+        entries = [ { 'MessageBody': json.dumps(m), 'Id': str(i), 'MessageDeduplicationId': str(uuid.uuid4()), "MessageGroupId" : "FetchWork" } for i, m in enumerate(message)]
         response = self.work_queue.send_messages(Entries = entries)
         Logger.debug(response)
 
