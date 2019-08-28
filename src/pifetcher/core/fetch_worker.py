@@ -10,10 +10,10 @@ class FetchWorker(ABC):
     IDLE_STATUS = 'IDLE'
     def __init__(self):
         self.check_config_init()
-        self.work_queue = WorkQueueFactory.get_work_queue(Config.queue['queue_type'], Config.queue['queue_name'])
+        self.work_queue = WorkQueueFactory.get_work_queue(Config.queue['queueType'], Config.queue['queueName'])
         self.has_stop = False
-        self.polling_interval_on_active = Config.queue["polling_interval_on_active"]
-        self.polling_interval_on_idle = Config.queue["polling_interval_on_idle"]
+        self.polling_interval_on_active = Config.queue["pollingIntervalOnActive"]
+        self.polling_interval_on_idle = Config.queue["pollingIntervalOnIdle"]
         self.worker_status = FetchWorker.ACTIVE_STATUS
         self.current_batch_id = None
     def check_config_init(self):
@@ -52,7 +52,7 @@ class FetchWorker(ABC):
 
     def perform_fetch(self, work, batch_id):
 
-        fetcher = FetcherFactory.get_fetcher_by_name(work['fetcher_name'])
+        fetcher = FetcherFactory.get_fetcher_by_name(work['fetcherName'])
         fetcher.load_html_by_url(work['url'])
         result, success = fetcher.parse()
 

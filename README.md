@@ -51,9 +51,9 @@ create a mapping config file for fetching amazon.com item pricing data
 ```
 3. create a pifetcherConfig.json file, and add the fetcher mapping file that previously created to fetcher -> mappingConfigs with its name and file path 
 
-num_works_per_time : defines the number of messages it try to fetch from the queue per work cycle
-polling_interval_on_active : time interval before fetching the next message when the worker status is active(meaning it fetched at least on message in the last worker cycle)
-polling_interval_on_idle : time interval before fetching the next message when the worker status is active(meaning it fetched no message in the last worker cycle)
+numWorksPerTime : defines the number of messages it try to fetch from the queue per work cycle
+pollingIntervalOnActive : time interval before fetching the next message when the worker status is active(meaning it fetched at least on message in the last worker cycle)
+pollingIntervalOnIdle : time interval before fetching the next message when the worker status is active(meaning it fetched no message in the last worker cycle)
 
 ```javascript
 {
@@ -67,11 +67,11 @@ polling_interval_on_idle : time interval before fetching the next message when t
     },
     "queue":
     {
-        "num_works_per_time": 1,
-        "queue_type":"AWSSimpleQueueService",
-        "queue_name":"datafetch.fifo",
-        "polling_interval_on_active": 0.2,
-        "polling_interval_on_idle": 60
+        "numWorksPerTime": 1,
+        "queueType":"AWSSimpleQueueService",
+        "queueName":"datafetch.fifo",
+        "pollingIntervalOnActive": 0.2,
+        "pollingIntervalOnIdle": 60
     },
     "logger":
     {
@@ -111,7 +111,7 @@ example:
     def on_batch_start(self, batch_id):
         work = {}
         work['url'] = 'a amazon url'
-        work['fetcher_name'] = 'amazon'
+        work['fetcherName'] = 'amazon'
         self.add_works([work])
     def on_batch_finish(self, batch_id):
         print(f"all works with the batchId {batch_id} have been processed")
@@ -149,12 +149,12 @@ taskkill /f /im chromedriver-win-76.exe
 
 When no message was fetched in a worker cycle, it would enter the idle state. Under the idle state, it's supposed to wait a longer time interval before trying to fetch the next message. This sleep interval is defined in the config file at the location:
 ```javascript
-        "polling_interval_on_idle": 60
+        "pollingIntervalOnIdle": 60
 ```
 
 After the worker received at least one mssage in a worker cycle, the worker status will be set as ACTIVE. Under this state, it's supposed to wait a shorter time interval before trying to fetch the next message. This sleep interval is defined in the config file at the location:
 ```javascript
-        "polling_interval_on_active": 0.2,
+        "pollingIntervalOnActive": 0.2,
 ```
 
 
