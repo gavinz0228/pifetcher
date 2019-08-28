@@ -6,10 +6,10 @@ class BaseWorkQueue(ABC):
         pass
     @abstractmethod
     def get_work(self):
-        raise NotADirectoryError()
+        raise NotImplementedError()
     @abstractmethod
     def add_work(self, message):
-        raise NotADirectoryError()
+        raise NotImplementedError()
     @abstractmethod
     def delete_work(self, id):
-        raise NotADirectoryError()
+        raise NotImplementedError()

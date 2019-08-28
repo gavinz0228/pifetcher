@@ -1,4 +1,5 @@
 import time
+import uuid
 from os import path
 from abc import ABC, abstractmethod
 from pifetcher.core import Logger, Config
@@ -26,6 +27,16 @@ class FetchWorker(ABC):
         messages = [ {"type":"FetchWork", "content": w} for w in works]
         self.work_queue.add_work(messages)
 
+    def send_start_signal(self):
+        batch_id = str(uuid.uuid4())
+        content = {"type":"BatchStart", "batchId": batch_id,"content":{}}
+        self.work_queue.add_work([content])
+        return batch_id
+
+    def send_finish_signal(self, batch_id):
+        content = {"type":"BatchFinish", "batchId": batch_id,"content":{}}
+        self.work_queue.add_work([content])
+
     @abstractmethod
     def on_save_result(self, result, work):
         raise NotImplementedError()
@@ -33,9 +44,13 @@ class FetchWorker(ABC):
     @abstractmethod
     def on_empty_result_error(self):
         pass
+    
+    @abstractmethod
+    def on_batch_finish(self, batchId):
+        pass
 
     @abstractmethod
-    def on_start_process_signal(self):
+    def on_batch_start(self, batch_id):
         pass
 
     def perform_fetch(self, work):
@@ -54,14 +69,24 @@ class FetchWorker(ABC):
             return False
 
     def process_message(self, message, handle):
+        Logger.debug(message)
         #perform work
         if message['type'] == 'FetchWork':
             success = self.perform_fetch(message['content'])
             if success:
                 self.work_queue.delete_work(handle)
-        elif message['type'] == 'StartProcess':
-            self.on_start_process_signal()
+
+        elif message['type'] == 'BatchStart':
+            self.on_batch_start(message["batchId"])
+            #at this point, all the works for this batch should have been added to the queue
+            #now, append a batch finish signal to the queue
+            self.send_finish_signal(message["batchId"])
             self.work_queue.delete_work(handle)
+
+        elif message['type'] == 'BatchFinish':
+            self.on_batch_finish(message["batchId"])
+            self.work_queue.delete_work(handle)
+
         elif message['type'] == 'ResumeProcess':
             self.has_stop = False
             self.work_queue.delete_work(handle)  

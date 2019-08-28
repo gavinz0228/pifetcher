@@ -20,7 +20,6 @@ class SqsWorkQueue(BaseWorkQueue):
         return messages, handles
 
     def add_work(self, message):
-        
         entries = [ { 'MessageBody': json.dumps(m), 'Id': str(i), 'MessageDeduplicationId': str(time.time()).replace(".",""), "MessageGroupId" : "FetchWork" } for i, m in enumerate(message)]
         response = self.work_queue.send_messages(Entries = entries)
         Logger.debug(response)

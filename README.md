@@ -15,17 +15,12 @@ pip install pifetcher
 - ChromeDriver for chrome 76(by default)
 - Chrome executable v 76(by default)
 
-## new feature:
+## features:
 
-Implemented a new strategy to fetch message in a smarter way. When no message was fetched in a worker cycle, it would enter the idle state. Under the idle state, it's supposed to wait a longer time interval before trying to fetch the next message. This sleep interval is defined in the config file at the location:
-```
-        "polling_interval_on_idle": 60
-```
-
-After the worker received at least one mssage in a worker cycle, the worker status will be set as ACTIVE. Under this state, it's supposed to wait a shorter time interval before trying to fetch the next message. This sleep interval is defined in the config file at the location:
-```
-        "polling_interval_on_active": 0.2,
-```
+- event-callback-based interaction between user defined logic and the pre-disigned fetch worker
+- process works in batches, library user will be able to capture the event of a batch of works have been finished
+- easy to use, only needs to inherit the FetchWorker class and implement the basic call back functions
+- it's design to use message queue, enbles more than just one worker to perform data fetching in order to scale the application 
 
 ## how to use:
 
@@ -141,12 +136,25 @@ Command to exit all chromedriver in windows
 taskkill /f /im chromedriver-win-76.exe
 ```
 
+# How to optimized the number of polls the worker has to send to the queue
+
+When no message was fetched in a worker cycle, it would enter the idle state. Under the idle state, it's supposed to wait a longer time interval before trying to fetch the next message. This sleep interval is defined in the config file at the location:
+```
+        "polling_interval_on_idle": 60
+```
+
+After the worker received at least one mssage in a worker cycle, the worker status will be set as ACTIVE. Under this state, it's supposed to wait a shorter time interval before trying to fetch the next message. This sleep interval is defined in the config file at the location:
+```
+        "polling_interval_on_active": 0.2,
+```
+
+
 ### To do list items:
 - fix browser driver issues
 - simplify initial setup process
 
-### Completed items
-- - use better strategy to reduce number of requests a worker has to send
+### Completed items:
+- use better strategy to reduce number of requests a worker has to send
 - put all constants in config the config file (checked)
 - complete the type conversions for different data types (checked)
 - add message type (work initiation message type) (checked)
