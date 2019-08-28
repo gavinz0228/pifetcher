@@ -8,8 +8,8 @@ from pifetcher.core import Config
 from pifetcher.core import FetchWorker
 
 class TestWorker(FetchWorker):
-    def on_save_result(self, result, work):
-        print(result)
+    def on_save_result(self, result, batch_id, work):
+        print(result, batch_id, work)
     def on_empty_result_error(self):
         self.stop()
     def on_batch_start(self, batch_id):

@@ -15,30 +15,27 @@ class FetchWorker(ABC):
         self.polling_interval_on_active = Config.queue["polling_interval_on_active"]
         self.polling_interval_on_idle = Config.queue["polling_interval_on_idle"]
         self.worker_status = FetchWorker.ACTIVE_STATUS
-
+        self.current_batch_id = None
     def check_config_init(self):
         if not Config.initialized:
             raise ValueError("please call pifetcher.core.Config.use to use a config file before using the worker.")
 
-    def log(self, message):
-        print(message)
-
     def add_works(self, works):
-        messages = [ {"type":"FetchWork", "content": w} for w in works]
+        messages = [ {"type":"FetchWork", 'batchId' : self.current_batch_id, "content": w} for w in works]
         self.work_queue.add_work(messages)
 
     def send_start_signal(self):
         batch_id = str(uuid.uuid4())
-        content = {"type":"BatchStart", "batchId": batch_id,"content":{}}
+        content = {"type":"BatchStart", 'batchId': batch_id,"content":{}}
         self.work_queue.add_work([content])
         return batch_id
 
     def send_finish_signal(self, batch_id):
-        content = {"type":"BatchFinish", "batchId": batch_id,"content":{}}
+        content = {"type":"BatchFinish", 'batchId': batch_id,"content":{}}
         self.work_queue.add_work([content])
 
     @abstractmethod
-    def on_save_result(self, result, work):
+    def on_save_result(self, result, batch_id, work):
         raise NotImplementedError()
 
     @abstractmethod
@@ -53,15 +50,15 @@ class FetchWorker(ABC):
     def on_batch_start(self, batch_id):
         pass
 
-    def perform_fetch(self, work):
+    def perform_fetch(self, work, batch_id):
 
         fetcher = FetcherFactory.get_fetcher_by_name(work['fetcher_name'])
         fetcher.load_html_by_url(work['url'])
         result, success = fetcher.parse()
 
-        Logger.debug( "parsed object" + str(success))
+        Logger.info(f'parsed object { str(result) } , batchId {batch_id}')
         if success:
-            self.on_save_result(result, work)
+            self.on_save_result(result, batch_id, work)
             return True
         else:
             Logger.info("no data was parse from the page. ")
@@ -72,26 +69,28 @@ class FetchWorker(ABC):
         Logger.debug(message)
         #perform work
         if message['type'] == 'FetchWork':
-            success = self.perform_fetch(message['content'])
+            success = self.perform_fetch(message['content'], message['batchId'])
             if success:
                 self.work_queue.delete_work(handle)
 
         elif message['type'] == 'BatchStart':
-            self.on_batch_start(message["batchId"])
+            self.current_batch_id = message['batchId']
+            self.on_batch_start(message['batchId'])
+            Logger.info(f'received BatchStart signal, batchId {message["batchId"]}')
             #at this point, all the works for this batch should have been added to the queue
             #now, append a batch finish signal to the queue
-            self.send_finish_signal(message["batchId"])
+            self.send_finish_signal(message['batchId'])
             self.work_queue.delete_work(handle)
 
         elif message['type'] == 'BatchFinish':
-            self.on_batch_finish(message["batchId"])
+            self.on_batch_finish(message['batchId'])
             self.work_queue.delete_work(handle)
 
         elif message['type'] == 'ResumeProcess':
             self.has_stop = False
             self.work_queue.delete_work(handle)  
         else:
-            Logger.warning('message type not recognized')  
+            Logger.warning(f'message type { message["type"] } not recognized')  
 
 
     def get_messages(self):
@@ -123,9 +122,3 @@ class FetchWorker(ABC):
                     Logger.debug(messages[i])
                     Logger.debug(handles[i])
                     self.process_message(messages[i], handles[i])
-
-                    
-
-
-
-

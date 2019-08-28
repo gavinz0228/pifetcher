@@ -104,8 +104,8 @@ on_batch_start: this will be called when the worker received a batch start signa
 on_batch_finish: this will be called when the worker received a batch finish signal
 example:
 ```python
-    def on_save_result(self, result, work):
-        print(result)
+    def on_save_result(self, result, batch_id, work):
+        print(result, batch_id, work)
     def on_empty_result_error(self):
         self.stop()
     def on_batch_start(self, batch_id):
