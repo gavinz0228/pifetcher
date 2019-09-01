@@ -1,6 +1,7 @@
 from os import path
 import json
 
+
 class Config:
     initialized = False
     browser = None
