@@ -76,8 +76,10 @@ class BaseDataFetcher(ABC):
                 parsed_data = True
             return_obj[field] = value
         return return_obj, parsed_data
+
     def close(self):
         self.driver.quit()
+        
     @check_init
     def get_value(self, path, type, attribute):
         element = self.dom.select_one(path)

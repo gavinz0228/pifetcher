@@ -27,8 +27,6 @@ class TestWorker(FetchWorker):
         print(f"all works with the batchId {batch_id} have been processed")
 
 if __name__ == "__main__":
-
-
     from pifetcher.core import FetcherFactory
     Config.use('pifetcherConfig.json')
 
