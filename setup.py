@@ -33,6 +33,7 @@ setuptools.setup(
     install_requires=[
           'bs4',
           'selenium',
+          'boto3'
       ]
 
 )
