@@ -1,11 +1,15 @@
-from pifetcher.core import FetcherFactory
-from os import path, chdir
+
+from os import path, chdir, getcwd, pardir
 import sys
-lib_path = path.join(path.dirname(path.realpath(__file__)), '../')
 cur_path = path.dirname(path.abspath(__file__))
+lib_path = path.abspath(path.join(cur_path, pardir))
+chdir(lib_path)
 sys.path.append(lib_path)
-chdir(cur_path)
+print(cur_path, lib_path, getcwd())
+
+
 from pifetcher.core import Config
+from pifetcher.core import FetcherFactory
 
 def test_fetch ():
     Config.use('pifetcherConfig.json')
