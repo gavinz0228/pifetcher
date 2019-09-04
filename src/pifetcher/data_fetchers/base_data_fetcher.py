@@ -47,7 +47,7 @@ class BaseDataFetcher(ABC):
         if not path.exists(driver_abs_path):
             raise Exception(f"driver path {driver_abs_path} cannot be found")
         
-        self.driver = webdriver.Chrome(chrome_options=options, executable_path=driver_abs_path)
+        self.driver = webdriver.Chrome(options=options, executable_path=driver_abs_path)
 
         #initialize class variable
         self.html_source = None
