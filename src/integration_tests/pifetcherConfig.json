@@ -5,7 +5,7 @@
         "win-binary_location": "",
         "mac-driver_path":"chromedriver-mac-76",
         "mac-binary_location": "",
-        "linux-driver_path":"chromedriver-mac-76",
+        "linux-driver_path":"chromedriver-linux-76",
         "linux-binary_location": ""
 
     },
