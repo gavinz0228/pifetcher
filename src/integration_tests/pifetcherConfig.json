@@ -4,7 +4,9 @@
         "win-driver_path":"chromedriver-win-76.exe",
         "win-binary_location": "",
         "mac-driver_path":"chromedriver-mac-76",
-        "mac-binary_location": ""
+        "mac-binary_location": "",
+        "linux-driver_path":"chromedriver-mac-76",
+        "linux-binary_location": ""
 
     },
     "queue":
