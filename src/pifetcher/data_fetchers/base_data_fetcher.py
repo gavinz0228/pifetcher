@@ -1,15 +1,15 @@
-from abc import ABC, abstractmethod
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from selenium.webdriver.chrome.options import Options
-from bs4 import BeautifulSoup
 import json
+from abc import ABC, abstractmethod
 from os import path, getcwd, get_exec_path
+
+from bs4 import BeautifulSoup
 from pifetcher.core import Config
 from pifetcher.core import Logger
 from pifetcher.utilities.data_utils import DataUtils
-
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.common.keys import Keys
 from sys import platform
 
 if platform == 'win32':
@@ -18,9 +18,10 @@ if platform == 'win32':
 elif platform == "darwin":
     KEY_DRIVER_PATH = 'mac-driver_path'
     KEY_BINARY_LOCATION = 'mac-binary_location'
-elif platform in ['linux','linux2']:
+elif platform in ['linux', 'linux2']:
     KEY_DRIVER_PATH = 'linux-driver_path'
     KEY_BINARY_LOCATION = 'linux-binary_location'
+
 
 def check_init(func):
     def wrapper(*args, **kwargs):
@@ -28,7 +29,9 @@ def check_init(func):
         if not self.initialized:
             raise Exception("Dom is used before initializing.")
         return func(*args, **kwargs)
+
     return wrapper
+
 
 class BaseDataFetcher(ABC):
     def __init__(self, config_file_path):
@@ -43,13 +46,14 @@ class BaseDataFetcher(ABC):
 
         driver_abs_path = Config.browser[KEY_DRIVER_PATH]
         if not path.exists(Config.browser[KEY_DRIVER_PATH]):
-            driver_abs_path = path.join(path.dirname(path.realpath(__file__)), '../','drivers/'+ Config.browser[KEY_DRIVER_PATH])
+            driver_abs_path = path.join(path.dirname(path.realpath(__file__)), '../',
+                                        'drivers/' + Config.browser[KEY_DRIVER_PATH])
         if not path.exists(driver_abs_path):
             raise Exception(f"driver path {driver_abs_path} cannot be found")
-        
+
         self.driver = webdriver.Chrome(options=options, executable_path=driver_abs_path)
 
-        #initialize class variable
+        # initialize class variable
         self.html_source = None
         self.dom = None
         self.initialized = False
@@ -79,7 +83,7 @@ class BaseDataFetcher(ABC):
 
     def close(self):
         self.driver.quit()
-        
+
     @check_init
     def get_value(self, path, type, attribute):
         element = self.dom.select_one(path)
@@ -88,7 +92,8 @@ class BaseDataFetcher(ABC):
         if attribute == ".text":
             return DataUtils.extract_by_type_name(element.text.strip(), type)
         elif attribute:
-            return DataUtils.extract_by_type_name(element[attribute].strip() , type)
-    
+            return DataUtils.extract_by_type_name(element[attribute].strip(), type)
+
+
 if __name__ == "__main__":
     pass

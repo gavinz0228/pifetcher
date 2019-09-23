@@ -1,17 +1,17 @@
 {
-    "price": {
-        "type": "float",
-        "selector": "#priceblock_ourprice",
-        "attribute":".text"
-    },
-    "id": {
-        "type": "text",
-        "selector": "#ASIN",
-        "attribute": "value"
-    },
-    "title": {
-        "type": "text",
-        "selector": "#productTitle",
-        "attribute":".text"
-    }
+  "price": {
+    "type": "float",
+    "selector": "#priceblock_ourprice",
+    "attribute": ".text"
+  },
+  "id": {
+    "type": "text",
+    "selector": "#ASIN",
+    "attribute": "value"
+  },
+  "title": {
+    "type": "text",
+    "selector": "#productTitle",
+    "attribute": ".text"
+  }
 }

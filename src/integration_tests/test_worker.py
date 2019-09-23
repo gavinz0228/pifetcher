@@ -24,13 +24,15 @@ class TestWorker(FetchWorker):
         print(f"all works with the batchId {batch_id} have been processed")
 
 def run_worker():
-    Config.use('pifetcherConfig.json')
+    #Config.use('pifetcherConfig.json')
     tw = TestWorker()
+    tw.init("pifetcherConfig.json")
     tw.do_works()
 
 def run_process():
-    Config.use('pifetcherConfig.json')
+    #Config.use('pifetcherConfig.json')
     tw = TestWorker()
+    tw.init("pifetcherConfig.json")
     tw.send_start_signal()
     tw.do_works()
 

@@ -1,7 +1,8 @@
 import json
+import uuid
+
 import boto3
 import time
-import uuid
 
 
 def start_process(event, context):
