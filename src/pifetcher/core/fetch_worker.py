@@ -11,7 +11,8 @@ class FetchWorker(ABC):
     ACTIVE_STATUS = 'ACTIVE'
     IDLE_STATUS = 'IDLE'
 
-    def init(self):
+    def init(self, config_path):
+        Config.use(config_path)
         self.check_config_init()
         self.work_queue = WorkQueueFactory.get_work_queue(Config.queue['queueType'], Config.queue['queueName'])
         self.has_stop = False

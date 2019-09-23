@@ -1,6 +1,8 @@
 *.pyc
+.idea
 .cache
 .DS_Store
+/.idea
 src/pifetcher/__pycache__/
 src/pifetcher/data_fetchers/__pycache__/
 src/pifetcher/work_queue/__pycache__/

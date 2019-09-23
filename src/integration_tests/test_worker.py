@@ -23,7 +23,7 @@ class TestWorker(FetchWorker):
     def on_batch_finish(self, batch_id):
         print(f"all works with the batchId {batch_id} have been processed")
 
-def run_worker():
+def _test_worker():
     #Config.use('pifetcherConfig.json')
     tw = TestWorker()
     tw.init("pifetcherConfig.json")
