@@ -1,5 +1,4 @@
 import logging
-
 from pifetcher.core import Config
 
 

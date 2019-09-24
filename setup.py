@@ -1,11 +1,12 @@
 import setuptools
 
+
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="pifetcher",
-    version="0.0.3.1",
+    version="0.0.3.4",
     author="Gavin Zhang",
     author_email="gavinz0228@gmail.com",
     description="A scalable headless data fetching library written with python and message queue service to enable quickly and easily prasing web data in a distributive way.",
@@ -35,5 +36,4 @@ setuptools.setup(
         'selenium',
         'boto3'
     ]
-
 )

@@ -4,13 +4,11 @@ from os import path, getcwd, get_exec_path
 
 from bs4 import BeautifulSoup
 from pifetcher.core import Config
-from pifetcher.core import Logger
-from pifetcher.utilities.data_utils import DataUtils
+from pifetcher.utilities import DataUtils, SysUtils
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from selenium.webdriver.common.keys import Keys
 from sys import platform
+
 
 if platform == 'win32':
     KEY_DRIVER_PATH = 'win-driver_path'
@@ -46,8 +44,11 @@ class BaseDataFetcher(ABC):
 
         driver_abs_path = Config.browser[KEY_DRIVER_PATH]
         if not path.exists(Config.browser[KEY_DRIVER_PATH]):
-            driver_abs_path = path.join(path.dirname(path.realpath(__file__)), '../',
-                                        'drivers/' + Config.browser[KEY_DRIVER_PATH])
+            driver_abs_path = path.join(
+                path.dirname(path.realpath(__file__)), '../',
+                'drivers/' + Config.browser[KEY_DRIVER_PATH])
+            SysUtils.set_executable_permission(driver_abs_path)
+
         if not path.exists(driver_abs_path):
             raise Exception(f"driver path {driver_abs_path} cannot be found")
 
