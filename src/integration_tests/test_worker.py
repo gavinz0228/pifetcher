@@ -15,25 +15,26 @@ class TestWorker(FetchWorker):
         work1 = {}
         work1['url'] = 'https://www.amazon.com/gp/product/B01HOS31B0?pf_rd_p=183f5289-9dc0-416f-942e-e8f213ef368b&pf_rd_r=VJQJJSGTMRT23K2K6S8T'
         work1['fetcherName'] = 'amazon'
+        work1['workId'] = 1
         work2 = {}
         work2['url'] = 'https://www.amazon.com/dp/B07FJWLLDB'
         work2['fetcherName'] = 'amazon'
+        work2['workId'] = 2
+
         self.add_works([work1, work2])
 
     def on_batch_finish(self, batch_id):
         print(f"all works with the batchId {batch_id} have been processed")
 
 def _test_worker():
-    #Config.use('pifetcherConfig.json')
     tw = TestWorker()
     tw.init("pifetcherConfig.json")
     tw.do_works()
 
-def run_process():
-    #Config.use('pifetcherConfig.json')
+def test_process():
     tw = TestWorker()
     tw.init("pifetcherConfig.json")
     tw.send_start_signal()
     tw.do_works()
 
-run_process()
+test_process()
