@@ -36,4 +36,4 @@ def run_process():
     tw.send_start_signal()
     tw.do_works()
 
-#test_all()
+run_process()

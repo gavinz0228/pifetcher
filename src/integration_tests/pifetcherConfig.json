@@ -11,17 +11,17 @@
       "--no-sandbox",
       "--disable-dev-shm-usage"
     ],
-    "win-driver_path": "chromedriver-win-76.exe",
+    "win-driver_path": "chromedriver-win-80.exe",
     "win-binary_location": "",
-    "mac-driver_path": "chromedriver-mac-76",
+    "mac-driver_path": "chromedriver-mac-80",
     "mac-binary_location": "",
-    "linux-driver_path": "chromedriver-linux-76",
+    "linux-driver_path": "chromedriver-linux-80",
     "linux-binary_location": ""
   },
   "queue": {
     "numWorksPerTime": 1,
-    "queueType": "AWSSimpleQueueService",
-    "queueName": "datafetch.fifo",
+    "queueType": "LocalWorkQueue",
+    "queueName": "",
     "pollingIntervalOnActive": 0.5,
     "pollingIntervalOnIdle": 3
   },
