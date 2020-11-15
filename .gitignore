@@ -14,3 +14,5 @@ pifetcher.egg-info/
 build/
 dist/
 src/integration_tests/debug.log
+.vscode/
+.pytest_cache/

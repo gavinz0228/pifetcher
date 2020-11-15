@@ -18,6 +18,7 @@
     "linux-driver_path": "chromedriver-linux-80",
     "linux-binary_location": ""
   },
+  "driverType": "HttpRequest",
   "queue": {
     "numWorksPerTime": 1,
     "queueType": "LocalWorkQueue",

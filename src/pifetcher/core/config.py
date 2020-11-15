@@ -19,5 +19,6 @@ class Config:
             Config.browser = config["browser"]
             Config.queue = config["queue"]
             Config.logger = config["logger"]
-            Config.fetcher = config["fetcher"]
+            Config.fetcher = config.get("fetcher", "selenium")
+            Config.driverType = config["driverType"]
             Config.initialized = True
