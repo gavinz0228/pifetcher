@@ -6,6 +6,15 @@ from pifetcher.core import Logger, Config
 from pifetcher.data_fetchers import FetcherFactory
 from pifetcher.work_queue import WorkQueueFactory
 
+from signal import signal, SIGINT
+from sys import exit
+
+def handler(signal_received, frame):
+    # Handle any cleanup here
+    print('SIGINT or CTRL-C detected. Exiting gracefully')
+    exit(0)
+# Tell Python to run the handler() function when SIGINT is recieved
+signal(SIGINT, handler)
 
 class FetchWorker(ABC):
     ACTIVE_STATUS = 'ACTIVE'

@@ -1,7 +1,7 @@
 from os import path
 
 from pifetcher.core import Config
-from pifetcher.data_fetchers import BaseDataFetcher, HttpRequestFetcher
+from pifetcher.data_fetchers import BaseDataFetcher, HttpRequestFetcher, PyppeteerFetcher
 from pifetcher.utilities import SysUtils
 
 
@@ -17,6 +17,8 @@ class FetcherFactory:
             fetcher_config_path = Config.fetcher['mappingConfigs'][name]
             if Config.driverType == 'HttpRequest':
                 fetcher = HttpRequestFetcher(SysUtils.ensure_path(fetcher_config_path))
+            elif Config.driverType == 'Pyppeteer':
+                fetcher = PyppeteerFetcher(SysUtils.ensure_path(fetcher_config_path))
             else:
                 fetcher = BaseDataFetcher(SysUtils.ensure_path(fetcher_config_path))
 

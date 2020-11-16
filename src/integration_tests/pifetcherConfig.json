@@ -18,7 +18,7 @@
     "linux-driver_path": "chromedriver-linux-80",
     "linux-binary_location": ""
   },
-  "driverType": "HttpRequest",
+  "driverType": "Pyppeteer",
   "queue": {
     "numWorksPerTime": 1,
     "queueType": "LocalWorkQueue",

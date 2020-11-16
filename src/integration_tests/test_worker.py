@@ -3,6 +3,7 @@ from pifetcher.core import Config
 from pifetcher.core import FetchWorker
 from pifetcher.core import FetcherFactory
 
+
 class TestWorker(FetchWorker):
 
     def on_save_result(self, result, batch_id, work):
