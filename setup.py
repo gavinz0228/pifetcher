@@ -35,6 +35,7 @@ setuptools.setup(
         'bs4',
         'selenium',
         'boto3',
-        'requests'
+        'requests',
+        'pyppeteer'
     ]
 )
