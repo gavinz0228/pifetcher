@@ -1,6 +1,5 @@
 boto3
 bs4
-selenium
 flake8
 pytest
 pyppeteer

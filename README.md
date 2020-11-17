@@ -9,11 +9,9 @@ pip install pifetcher
 ## PYPI Link  [https://pypi.org/project/pifetcher/](https://pypi.org/project/pifetcher/)
 
 ## dependencies:
-- selenium
+- pyppeteer
 - BeautifulSoup4
 - boto3 (optional but by default)
-- ChromeDriver for chrome 76(by default)
-- Chrome executable v 76(by default)
 
 ## features:
 
@@ -24,10 +22,8 @@ pip install pifetcher
 
 ## how to use:
 
-1. set up work queue component on the host computer(aws simple queue service by default), such as credentials, regions
-[AWS BOTO3 initial set up docs](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html)
 
-2. configure a fetcher by creating a field mapping config file, for example:
+1. configure a fetcher by creating a field mapping config file, for example:
 create a mapping config file for fetching amazon.com item pricing data
 
 ```javascript
@@ -49,7 +45,7 @@ create a mapping config file for fetching amazon.com item pricing data
     }
 }
 ```
-3. create a pifetcherConfig.json file, and add the fetcher mapping file that previously created to fetcher -> mappingConfigs with its name and file path 
+2. create a pifetcherConfig.json file, and add the fetcher mapping file that previously created to fetcher -> mappingConfigs with its name and file path 
 
 numWorksPerTime : defines the number of messages it try to fetch from the queue per work cycle
 pollingIntervalOnActive : time interval before fetching the next message when the worker status is active(meaning it fetched at least on message in the last worker cycle)
@@ -57,14 +53,6 @@ pollingIntervalOnIdle : time interval before fetching the next message when the 
 
 ```javascript
 {
-    "browser":{
-        "browser_options":["--window-size=1920,1080", "--disable-extensions", "--proxy-server='direct://'", "--proxy-bypass-list=*", "--start-maximized","--ignore-certificate-errors", "--headless"],
-        "win-driver_path":"chromedriver-win-76.exe",
-        "win-binary_location": "",
-        "mac-driver_path":"chromedriver-mac-76",
-        "mac-binary_location": ""
-
-    },
     "queue":
     {
         "numWorksPerTime": 1,
@@ -82,11 +70,10 @@ pollingIntervalOnIdle : time interval before fetching the next message when the 
         "mappingConfigs":{
             "amazon":"amazon.json"
         }
-        
     }
 }
 ```
-4.  to use the fetcher worker
+3.  to use the fetcher worker
 - import the fetcher worker class and config class 
 ```python
 from pifetcher.core import Config
@@ -116,7 +103,7 @@ example:
     def on_batch_finish(self, batch_id):
         print(f"all works with the batchId {batch_id} have been processed")
 ```
-5. Run the worker and, send a StartProcess Signal to the queue to start the process
+4. Run the worker and, send a StartProcess Signal to the queue to start the process
 
 - start the worker to receive and process works
 
@@ -131,7 +118,12 @@ If you want to send out the start signal from one of the worker, you can call th
 tw.send_start_signal()
 ```
 
-But if you want to start the batch process from another system, you can use the code below
+# How to use a scalable message queue system like AWS Simple Queue Service
+
+To set up work queue component on the host computer(aws simple queue service by default), such as credentials, regions
+[AWS BOTO3 initial set up docs](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html)
+
+If you want to start the batch process from another system, you can use the code below
 ```python
     sqs = boto3.resource('sqs')
     queue = sqs.get_queue_by_name(QueueName='datafetch.fifo')
@@ -140,10 +132,6 @@ But if you want to start the batch process from another system, you can use the 
     
 ``` 
 
-Command to exit all chromedriver in windows
-```
-taskkill /f /im chromedriver-win-76.exe
-```
 
 # How to optimized the number of polls the worker has to send to the queue
 
@@ -159,7 +147,6 @@ After the worker received at least one mssage in a worker cycle, the worker stat
 
 
 ### To do list items:
-- fix browser driver issues
 - simplify initial setup process
 
 ### Completed items:
@@ -168,4 +155,5 @@ After the worker received at least one mssage in a worker cycle, the worker stat
 - complete the type conversions for different data types (checked)
 - add message type (work initiation message type) (checked)
 - logging (checked)
-- data fetching with use of aws sqs
+- data fetching with use of aws sqs (checked)
+- use a better scrapping library pyppeteer(checked)
