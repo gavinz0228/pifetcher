@@ -1,23 +1,4 @@
 {
-  "browser": {
-    "browser_options": [
-      "--window-size=1920,1080",
-      "--disable-extensions",
-      "--proxy-server='direct://'",
-      "--proxy-bypass-list=*",
-      "--start-maximized",
-      "--ignore-certificate-errors",
-      "--headless",
-      "--no-sandbox",
-      "--disable-dev-shm-usage"
-    ],
-    "win-driver_path": "chromedriver-win-76.exe",
-    "win-binary_location": "",
-    "mac-driver_path": "chromedriver-mac-76",
-    "mac-binary_location": "",
-    "linux-driver_path": "chromedriver-linux-76",
-    "linux-binary_location": ""
-  },
   "queue": {
     "numWorksPerTime": 1,
     "queueType": "AWSSimpleQueueService",

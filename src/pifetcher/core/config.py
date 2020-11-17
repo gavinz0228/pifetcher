@@ -16,9 +16,8 @@ class Config:
         with open(config_path, 'r') as f:
             config = json.load(f)
 
-            Config.browser = config["browser"]
-            Config.queue = config["queue"]
-            Config.logger = config["logger"]
-            Config.fetcher = config.get("fetcher", "selenium")
-            Config.driverType = config["driverType"]
+            Config.queue = config.get("queue", "LocalWorkQueue")
+            Config.logger = config.get("logger", "console")
+            Config.fetcher = config["fetcher"]
+            Config.driverType = config.get("driverType", "pyppeteer")
             Config.initialized = True
