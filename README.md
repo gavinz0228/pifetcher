@@ -53,24 +53,22 @@ pollingIntervalOnIdle : time interval before fetching the next message when the 
 
 ```javascript
 {
-    "queue":
-    {
-        "numWorksPerTime": 1,
-        "queueType":"AWSSimpleQueueService",
-        "queueName":"datafetch.fifo",
-        "pollingIntervalOnActive": 0.2,
-        "pollingIntervalOnIdle": 60
-    },
-    "logger":
-    {
-        "output":"console"
-    },
-    "fetcher":
-    {
-        "mappingConfigs":{
-            "amazon":"amazon.json"
-        }
+  "driverType": "Pyppeteer",
+  "queue": {
+    "numWorksPerTime": 1,
+    "queueType": "LocalWorkQueue",
+    "queueName": "",
+    "pollingIntervalOnActive": 0.5,
+    "pollingIntervalOnIdle": 60
+  },
+  "logger": {
+    "output": "console"
+  },
+  "fetcher": {
+    "mappingConfigs": {
+      "amazon": "amazon.json"
     }
+  }
 }
 ```
 3.  to use the fetcher worker
