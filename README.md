@@ -2,7 +2,7 @@
 A scalable headless data fetching library written with python and message queue service to enable quickly and easily parsing web data in a distributive way.
 
 ## To install
-```
+```bash
 pip install pifetcher
 ```
 
@@ -129,7 +129,6 @@ If you want to start the batch process from another system, you can use the code
     queue.send_message(MessageBody=json.dumps(content), MessageGroupId = "FetchWork", MessageDeduplicationId = str(time.time()).replace(".",""))
     
 ``` 
-
 
 # How to optimized the number of polls the worker has to send to the queue
 

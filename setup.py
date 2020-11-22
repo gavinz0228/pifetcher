@@ -6,12 +6,12 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pifetcher",
-    version="0.0.3.4",
+    version="0.0.3.7",
     author="Gavin Zhang",
     author_email="gavinz0228@gmail.com",
     description="A scalable headless data fetching library written with python and message queue service to enable quickly and easily prasing web data in a distributive way.",
-    long_description=long_description,
     long_description_content_type="text/markdown",
+    long_description=long_description,
     url="https://github.com/gavinz0228/pifetcher",
     # packages=setuptools.find_packages("src"),
 
@@ -33,7 +33,6 @@ setuptools.setup(
     include_package_data=True,
     install_requires=[
         'bs4',
-        'selenium',
         'boto3',
         'requests',
         'pyppeteer'
