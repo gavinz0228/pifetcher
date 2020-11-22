@@ -11,7 +11,7 @@ pip install pifetcher
 ## dependencies:
 - pyppeteer
 - BeautifulSoup4
-- boto3 (optional but by default)
+- boto3
 
 ## features:
 

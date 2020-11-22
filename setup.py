@@ -1,12 +1,15 @@
 import setuptools
 
 
-with open("README.md", "r") as fh:
+with open("README.txt", "r") as fh:
     long_description = fh.read()
+#import pypandoc
+#long_description = pypandoc.convert('README.md', 'rst')
+#long_description = long_description.replace("\r","") # Do not forget this line
 
 setuptools.setup(
     name="pifetcher",
-    version="0.0.3.7",
+    version="0.0.3.8",
     author="Gavin Zhang",
     author_email="gavinz0228@gmail.com",
     description="A scalable headless data fetching library written with python and message queue service to enable quickly and easily prasing web data in a distributive way.",
